@@ -29,6 +29,7 @@ class GiphySheet extends StatefulWidget {
   final String? searchLabelText;
   final String? searchHintText;
   final String? searchEmptyResultText;
+  final String? searchCancelText;
   final String? headerGifsText;
   final String? headerStickersText;
   final String? headerEmojiText;
@@ -85,6 +86,7 @@ class GiphySheet extends StatefulWidget {
     this.searchLabelText,
     this.searchHintText,
     this.searchEmptyResultText,
+    this.searchCancelText,
     this.onSelected,
     this.attribution,
     this.showAttribution = true,
@@ -135,7 +137,7 @@ class _GiphySheetState extends State<GiphySheet> {
     _inputDecoration = widget.searchInputDecoration ??
         InputDecoration(
           prefixIcon: const Icon(Icons.search),
-          labelText: widget.searchLabelText ?? 'Giphy search',
+          labelText: widget.searchLabelText ?? 'GIPHY search',
           hintText: widget.searchHintText ?? 'Your search',
           suffix: PlatformIconButton(
               icon: Icon(CommonPlatformIcons.clear),
@@ -153,7 +155,7 @@ class _GiphySheetState extends State<GiphySheet> {
     final maxAttributionSize = Size(size.width * 0.4, 40);
     final attribution = widget.attribution ??
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.only(right: 8.0),
           child: ConstrainedBox(
             constraints: BoxConstraints.loose(maxAttributionSize),
             child: Image.asset(
@@ -173,7 +175,10 @@ class _GiphySheetState extends State<GiphySheet> {
                 ? Row(
                     children: [
                       Expanded(
-                        child: _buildSearchField(context),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: _buildSearchField(context),
+                        ),
                       ),
                       attribution,
                     ],
@@ -265,7 +270,10 @@ class _GiphySheetState extends State<GiphySheet> {
               }
             }
             return SliverToBoxAdapter(
-                child: Center(child: PlatformCircularProgressIndicator()));
+              child: Center(
+                child: PlatformCircularProgressIndicator(),
+              ),
+            );
           },
         ),
       ],
@@ -288,16 +296,29 @@ class _GiphySheetState extends State<GiphySheet> {
   }
 
   Widget _buildSearchField(BuildContext context) {
+    if (PlatformInfo.isCupertino) {
+      return CupertinoSearchFlowTextField(
+        enabled: (_currentRequest.type != GiphyType.emoji),
+        controller: _searchController,
+        cancelText: widget.searchCancelText ?? 'Cancel',
+        onSubmitted: _onSearchSubmitted,
+        title: _inputDecoration.labelText,
+      );
+    }
     return DecoratedPlatformTextField(
       enabled: (_currentRequest.type != GiphyType.emoji),
       decoration: _inputDecoration,
       controller: _searchController,
       textInputAction: TextInputAction.search,
-      onSubmitted: (text) {
-        final request = _currentRequest.copyWith(searchQuery: text);
-        _reload(request);
-      },
+      onSubmitted: _onSearchSubmitted,
     );
+  }
+
+  void _onSearchSubmitted(String text) {
+    final request = text.isEmpty
+        ? _currentRequest.copyWithoutSearchQuery()
+        : _currentRequest.copyWith(searchQuery: text);
+    _reload(request);
   }
 
   void _reload(GiphyRequest request) {
@@ -347,32 +368,29 @@ class _GiphySheetState extends State<GiphySheet> {
     // }
     final content = (username == null || username.isEmpty)
         ? giphy
-        : Stack(
+        : Column(
             children: [
-              Align(alignment: Alignment.center, child: giphy),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    color: Theme.of(context).canvasColor.withAlpha(128),
-                    child: PlatformTextButton(
-                      child: PlatformText('@${gif.username}'),
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                        final query = '@${gif.username}';
-                        _searchController.text = query;
-                        final scrollController = widget.scrollController;
-                        if (scrollController != null) {
-                          scrollController.animateTo(
-                            0.0,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                        }
-                        _reload(_currentRequest.copyWith(searchQuery: query));
-                      },
-                    ),
+              giphy,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  color: Theme.of(context).canvasColor.withAlpha(128),
+                  child: PlatformTextButton(
+                    child: PlatformText('@${gif.username}'),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                      final query = '@${gif.username}';
+                      _searchController.text = query;
+                      final scrollController = widget.scrollController;
+                      if (scrollController != null) {
+                        scrollController.animateTo(
+                          0.0,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                      _reload(_currentRequest.copyWith(searchQuery: query));
+                    },
                   ),
                 ),
               ),

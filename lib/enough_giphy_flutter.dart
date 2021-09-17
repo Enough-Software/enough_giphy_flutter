@@ -36,7 +36,7 @@ class Giphy {
   ///
   /// Show you own UI on top of the GIPHY sheet after the user has selected a [GiphyGif] by setting your custom [onSelected] callback.
   ///
-  /// Localize the UI by setting [searchLabelText], [searchHintText], [searchEmptyResultText], [headerGifsText], [headerStickersText] and [headerEmojiText].
+  /// Localize the UI by setting [searchLabelText], [searchHintText], [searchEmptyResultText], [searchCancelText], [headerGifsText], [headerStickersText] and [headerEmojiText].
   ///
   /// Adapt the minimum number of columns shown with [gridMinColumns], which defaults to `2`.
   ///
@@ -67,6 +67,7 @@ class Giphy {
     String? searchLabelText,
     String? searchHintText,
     String? searchEmptyResultText,
+    String? searchCancelText,
     String? headerGifsText,
     String? headerStickersText,
     String? headerEmojiText,
@@ -123,6 +124,7 @@ class Giphy {
           searchLabelText: searchLabelText,
           searchHintText: searchHintText,
           searchEmptyResultText: searchEmptyResultText,
+          searchCancelText: searchCancelText,
           headerGifsText: headerGifsText,
           headerStickersText: headerStickersText,
           headerEmojiText: headerEmojiText,

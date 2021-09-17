@@ -25,10 +25,10 @@ dependencies:
     sdk: flutter
   enough_giphy_flutter: 
     path: ../
-  enough_platform_widgets:
+  enough_platform_widgets: ^0.2.0
     # git:
     #   url: https://github.com/Enough-Software/enough_platform_widgets.git
-    path: ../../enough_platform_widgets
+    # path: ../../enough_platform_widgets
 
 
   # The following adds the Cupertino Icons font to your application.

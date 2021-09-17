@@ -178,8 +178,8 @@ class GiphyImageView extends StatelessWidget {
       final factor = min(size.width / iw, size.height / ih);
       w = iw * factor;
       h = ih * factor;
-      print(
-          'image: $iw x $ih, available: ${size.width} x ${size.height}, factor: $factor, result: $w x $h');
+      // print(
+      //     'image: $iw x $ih, available: ${size.width} x ${size.height}, factor: $factor, result: $w x $h');
     }
     return FadeInImage.memoryNetwork(
       placeholder: TransparentImage.data,
