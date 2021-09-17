@@ -358,7 +358,7 @@ class _GiphySheetState extends State<GiphySheet> {
   Future<bool?> _showPreview(GiphyGif gif) {
     final titleWidget = Text(gif.title);
     final username = gif.username;
-    final giphy = GiphyImageView(gif: gif);
+    final giphy = GiphyImageView(gif: gif, fit: BoxFit.contain);
     // final radius = widget.previewBorderRadius;
     // if (radius != null) {
     //   giphy = ClipRRect(
@@ -368,33 +368,35 @@ class _GiphySheetState extends State<GiphySheet> {
     // }
     final content = (username == null || username.isEmpty)
         ? giphy
-        : Column(
-            children: [
-              giphy,
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  color: Theme.of(context).canvasColor.withAlpha(128),
-                  child: PlatformTextButton(
-                    child: PlatformText('@${gif.username}'),
-                    onPressed: () {
-                      Navigator.of(context).pop(false);
-                      final query = '@${gif.username}';
-                      _searchController.text = query;
-                      final scrollController = widget.scrollController;
-                      if (scrollController != null) {
-                        scrollController.animateTo(
-                          0.0,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                      _reload(_currentRequest.copyWith(searchQuery: query));
-                    },
+        : SingleChildScrollView(
+            child: Column(
+              children: [
+                giphy,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    color: Theme.of(context).canvasColor.withAlpha(128),
+                    child: PlatformTextButton(
+                      child: PlatformText('@${gif.username}'),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                        final query = '@${gif.username}';
+                        _searchController.text = query;
+                        final scrollController = widget.scrollController;
+                        if (scrollController != null) {
+                          scrollController.animateTo(
+                            0.0,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                        _reload(_currentRequest.copyWith(searchQuery: query));
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
     if (PlatformInfo.isCupertino) {
       return showCupertinoDialog<bool>(

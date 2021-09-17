@@ -166,24 +166,14 @@ class GiphyImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final image = isShownInGrid
+    final imageData = isShownInGrid
         ? gif.recommendedMobileKeyboard
         : gif.recommendedMobileSend;
     var w = width;
     var h = height;
-    if (!isShownInGrid && w == null && h == null) {
-      final iw = image.widthDouble;
-      final ih = image.heightDouble;
-      final size = MediaQuery.of(context).size;
-      final factor = min(size.width / iw, size.height / ih);
-      w = iw * factor;
-      h = ih * factor;
-      // print(
-      //     'image: $iw x $ih, available: ${size.width} x ${size.height}, factor: $factor, result: $w x $h');
-    }
-    return FadeInImage.memoryNetwork(
+    final image = FadeInImage.memoryNetwork(
       placeholder: TransparentImage.data,
-      image: image.url,
+      image: imageData.url,
       fit: fit,
       excludeFromSemantics: excludeFromSemantics,
       width: w,
@@ -201,5 +191,15 @@ class GiphyImageView extends StatelessWidget {
       imageScale: scale,
       imageSemanticLabel: semanticLabel,
     );
+    final adaptSize = !isShownInGrid && w == null && h == null;
+    if (adaptSize) {
+      final iw = imageData.widthDouble;
+      final ih = imageData.heightDouble;
+      return AspectRatio(
+        aspectRatio: iw / ih,
+        child: image,
+      );
+    }
+    return image;
   }
 }
