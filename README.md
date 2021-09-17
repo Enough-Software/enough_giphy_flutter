@@ -29,7 +29,7 @@ Check out the full API documentation at https://pub.dev/documentation/enough_gip
 Use `enough_giphy_flutter` to select a GIF, sticker or emoji from [GIPHY](https://developers.giphy.com/). 
 
 ### Requirements
-* Sign up for the mandatory API key for each supported platform at developers.giphy.com, compare https://developers.giphy.com/docs/api#quick-start-guide for details.
+* Sign up for the mandatory API key for each supported platform at developers.giphy.com, compare https://developers.giphy.com/docs/api#quick-start-guide for details. Select `API` and not `SDK` when generating the API key.
 * Android: Ensure to add internet permission to your _AndroidManifest.xml_: `<uses-permission android:name="android.permission.INTERNET"/>` 
 
 
