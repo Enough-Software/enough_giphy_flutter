@@ -370,6 +370,7 @@ class _GiphySheetState extends State<GiphySheet> {
         ? giphy
         : SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 giphy,
                 Padding(
@@ -417,6 +418,7 @@ class _GiphySheetState extends State<GiphySheet> {
         ),
       );
     }
+    final onSurfaceColor = Theme.of(context).colorScheme.onSurface;
     return showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -425,11 +427,11 @@ class _GiphySheetState extends State<GiphySheet> {
         actions: [
           IconButton(
             onPressed: () => Navigator.of(context).pop(false),
-            icon: const Icon(Icons.clear),
+            icon: Icon(Icons.clear, color: onSurfaceColor),
           ),
           IconButton(
             onPressed: () => Navigator.of(context).pop(true),
-            icon: const Icon(Icons.check),
+            icon: Icon(Icons.check, color: onSurfaceColor),
           ),
         ],
       ),
