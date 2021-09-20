@@ -10,6 +10,9 @@ Using `enough_giphy_flutter` has the following benefits:
 * Customize the look and feel according to your preferences and style.
 * As few dependencies as possible.
 
+[<img src="screenshots/enough_giphy_flutter-android.gif" width="320"/>](screenshots/enough_giphy_flutter-android.gif)
+[<img src="screenshots/enough_giphy_flutter-ios.gif" width="320"/>](screenshots/enough_giphy_flutter-ios.gif)
+
 
 ## Installation
 Add this dependency your pubspec.yaml file:
@@ -112,7 +115,7 @@ final gif = await Giphy.getGif(
     type: GiphyType.gifs,
     lang: GiphyLanguage.german, 
     rating: GiphyRating.g,
-    searchLabelText: 'Suche',
+    searchLabelText: 'GIPHY Suche',
     searchHintText: 'Deine Suchanfrage',
     searchEmptyResultText: 'Nichts gefunden...',
     headerGifsText: 'GIFs',
