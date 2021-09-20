@@ -8,9 +8,9 @@ Using `enough_giphy_flutter` has the following benefits:
 * Platform-specific UI: use cupertino look and feel on iOS and MacOS, material on Android and other platforms.
 * Easily localize all texts.
 * Customize the look and feel according to your preferences and style.
-* As few dependencies as possible.
+* Uses as few dependencies as possible.
 
-[<img src="screenshots/enough_giphy_flutter-android.gif" width="320"/>](screenshots/enough_giphy_flutter-android.gif)
+[<img src="screenshots/enough_giphy_flutter-android.gif" width="360"/>](screenshots/enough_giphy_flutter-android.gif)
 [<img src="screenshots/enough_giphy_flutter-ios.gif" width="320"/>](screenshots/enough_giphy_flutter-ios.gif)
 
 
@@ -33,8 +33,9 @@ Use `enough_giphy_flutter` to select a GIF, sticker or emoji from [GIPHY](https:
 
 ### Requirements
 * Sign up for the mandatory API key for each supported platform at developers.giphy.com, compare https://developers.giphy.com/docs/api#quick-start-guide for details. Select `API` and not `SDK` when generating the API key.
-* Android: Ensure to add internet permission to your _AndroidManifest.xml_: `<uses-permission android:name="android.permission.INTERNET"/>` 
-
+* Android: Ensure to add internet permission to your _AndroidManifest.xml_: 
+`<uses-permission android:name="android.permission.INTERNET"/>` 
+* When ready, apply for a [GIPHY production key](https://developers.giphy.com/dashboard/) 
 
 ### Pick a GIF, Sticker or Emoji
 Use `Giphy.getGif(...)` to pick a GIF, sticker or emoji. 
@@ -187,3 +188,13 @@ Use the `widgets` package to build fully customized GIPHY solutions easily. Use 
 ```dart
 import 'package:enough_giphy_flutter/widgets.dart';
 ```
+
+## Features and bugs
+
+Please file feature requests and bugs at the [issue tracker][tracker].
+
+[tracker]: https://github.com/enough-software/enough_giphy_flutter/issues
+
+## License
+
+Licensed under the commercial friendly [Mozilla Public License 2.0](LICENSE).
