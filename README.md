@@ -19,7 +19,7 @@ Add this dependency your pubspec.yaml file:
 
 ```
 dependencies:
-  enough_giphy_flutter: ^0.2.0
+  enough_giphy_flutter: ^0.2.1
 ```
 The latest version or `enough_giphy_flutter` is [![enough_giphy_flutter version](https://img.shields.io/pub/v/enough_giphy_flutter.svg)](https://pub.dartlang.org/packages/enough_giphy_flutter).
 
@@ -179,6 +179,7 @@ Apart from the above can customize a lot of things, e.g.
 * Set [showAttribution] to `false` to hide the attribution or specify your own attribution witdget with [attribution].
 * Enable keeping the state of the currently selected type and search between invocations by setting [keepState] to `true`.
 * Show you own UI on top of the GIPHY sheet after the user has selected a [GiphyGif] by setting your custom [onSelected] callback.
+* Create your own `previewBorderRadius` or set it to `null` to adapt the border of the shown GIFs in the preview to your liking (remebder to set `showPreview` to `true`).
 
 
 ### Build your own Giphy Experience

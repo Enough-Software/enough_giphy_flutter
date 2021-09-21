@@ -1,3 +1,9 @@
+## 0.2.1
+* Improve code style
+* Gain compatibility with flutter web
+* Fix dartdoc generation error
+* Add `previewBorderRadius` option
+
 ## 0.2.0
 
 * Improve documentation
