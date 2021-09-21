@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:enough_giphy/enough_giphy.dart';
 import 'package:enough_giphy_flutter/src/transparent_image.dart';
 import 'package:flutter/widgets.dart';
