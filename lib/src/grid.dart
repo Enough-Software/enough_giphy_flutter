@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import 'image.dart';
+import 'image_view.dart';
 
 /// Shows GIFs in a grid
 class GiphyGrid extends StatelessWidget {

@@ -1,5 +1,4 @@
 import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
-import 'package:enough_giphy_flutter/widgets.dart';
 import 'package:enough_platform_widgets/enough_platform_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

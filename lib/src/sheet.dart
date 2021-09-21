@@ -1,6 +1,6 @@
 import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:enough_giphy_flutter/src/grid.dart';
-import 'package:enough_giphy_flutter/src/image.dart';
+import 'package:enough_giphy_flutter/src/image_view.dart';
 import 'package:enough_platform_widgets/enough_platform_widgets.dart';
 import 'package:enough_platform_widgets/platform.dart';
 import 'package:flutter/animation.dart';
@@ -69,8 +69,8 @@ class GiphySheet extends StatefulWidget {
   /// The border radius for images shown in the grid
   final BorderRadius? gridBorderRadius;
 
-  // / The border radius for an image shown in a preview alert
-  // final BorderRadius? previewBorderRadius;
+  /// The border radius for an image shown in a preview alert
+  final BorderRadius? previewBorderRadius;
 
   /// The type of the predefined grids
   final GridType gridType;
@@ -99,7 +99,7 @@ class GiphySheet extends StatefulWidget {
     this.headerEmojiText,
     this.gridSpacing = 2.0,
     this.gridBorderRadius,
-    // this.previewBorderRadius,
+    this.previewBorderRadius,
     this.scrollController,
     this.gridMinColumns = 2,
     this.gridType = GridType.stackedColumns,
@@ -358,14 +358,14 @@ class _GiphySheetState extends State<GiphySheet> {
   Future<bool?> _showPreview(GiphyGif gif) {
     final titleWidget = Text(gif.title);
     final username = gif.username;
-    final giphy = GiphyImageView(gif: gif, fit: BoxFit.contain);
-    // final radius = widget.previewBorderRadius;
-    // if (radius != null) {
-    //   giphy = ClipRRect(
-    //     borderRadius: radius,
-    //     child: giphy,
-    //   );
-    // }
+    Widget giphy = GiphyImageView(gif: gif, fit: BoxFit.contain);
+    final radius = widget.previewBorderRadius;
+    if (radius != null) {
+      giphy = ClipRRect(
+        borderRadius: radius,
+        child: giphy,
+      );
+    }
     final content = (username == null || username.isEmpty)
         ? giphy
         : SingleChildScrollView(

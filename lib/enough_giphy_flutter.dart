@@ -1,6 +1,7 @@
 library enough_giphy_flutter;
 
 export 'package:enough_giphy/enough_giphy.dart';
+export 'src/image_view.dart';
 
 import 'package:enough_giphy/enough_giphy.dart';
 import 'package:enough_giphy_flutter/src/sheet.dart';
@@ -63,6 +64,10 @@ class Giphy {
     bool showSearch = true,
     bool showTypeSwitcher = true,
     bool showPreview = false,
+    BorderRadius? previewBorderRadius = const BorderRadius.only(
+      topLeft: Radius.circular(8.0),
+      bottomRight: Radius.circular(8.0),
+    ),
     bool keepState = false,
     String? searchLabelText,
     String? searchHintText,
@@ -77,10 +82,6 @@ class Giphy {
       topLeft: Radius.circular(8.0),
       bottomRight: Radius.circular(8.0),
     ),
-    // BorderRadius? previewBorderRadius = const BorderRadius.only(
-    //   topLeft: Radius.circular(8.0),
-    //   bottomRight: Radius.circular(8.0),
-    // ),
     GridType gridType = GridType.stackedColumns,
     Widget Function(
       BuildContext context,
@@ -118,6 +119,7 @@ class Giphy {
           showSearch: showSearch,
           showTypeSwitcher: showTypeSwitcher,
           showPreview: showPreview,
+          previewBorderRadius: previewBorderRadius,
           keepState: keepState,
           gridBuilder: gridBuilder,
           errorBuilder: errorBuilder,
