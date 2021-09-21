@@ -1,3 +1,6 @@
+## 0.2.2
+* Fix for dartdoc error
+
 ## 0.2.1
 * Improve code style
 * Gain compatibility with flutter web
