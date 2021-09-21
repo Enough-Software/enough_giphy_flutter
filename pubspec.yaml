@@ -1,6 +1,6 @@
 name: enough_giphy_flutter
 description: Add a powerful and customizable GIPHY picker into your Flutter app.
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/Enough-Software/enough_giphy_flutter
 
 environment:
@@ -14,9 +14,9 @@ dependencies:
     # git:
     #   url: https://github.com/Enough-Software/enough_giphy.git
     # path: ../enough_giphy
-  enough_platform_widgets: #^0.2.0 
-    git:
-      url: https://github.com/Enough-Software/enough_platform_widgets.git
+  enough_platform_widgets: ^0.2.1
+    # git:
+    #   url: https://github.com/Enough-Software/enough_platform_widgets.git
     # path: ../enough_platform_widgets
 
 dev_dependencies:

@@ -10,8 +10,8 @@ Using `enough_giphy_flutter` has the following benefits:
 * Customize the look and feel according to your preferences and style.
 * Uses as few dependencies as possible.
 
-[<img src="screenshots/enough_giphy_flutter-android.gif" width="360"/>](screenshots/enough_giphy_flutter-android.gif)
-[<img src="screenshots/enough_giphy_flutter-ios.gif" width="320"/>](screenshots/enough_giphy_flutter-ios.gif)
+[<img src="https://github.com/Enough-Software/enough_giphy_flutter/raw/main/screenshots/enough_giphy_flutter-android.gif" width="370"/>](https://github.com/Enough-Software/enough_giphy_flutter/raw/main/screenshots/enough_giphy_flutter-android.gif)
+[<img src="https://github.com/Enough-Software/enough_giphy_flutter/raw/main/screenshots/enough_giphy_flutter-ios.gif" width="320"/>](https://github.com/Enough-Software/enough_giphy_flutter/raw/main/screenshots/enough_giphy_flutter-ios.gif)
 
 
 ## Installation
@@ -19,7 +19,7 @@ Add this dependency your pubspec.yaml file:
 
 ```
 dependencies:
-  enough_giphy_flutter: ^0.1.0
+  enough_giphy_flutter: ^0.2.0
 ```
 The latest version or `enough_giphy_flutter` is [![enough_giphy_flutter version](https://img.shields.io/pub/v/enough_giphy_flutter.svg)](https://pub.dartlang.org/packages/enough_giphy_flutter).
 
