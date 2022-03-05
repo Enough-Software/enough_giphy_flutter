@@ -4,6 +4,7 @@ import 'dart:typed_data';
 class TransparentImage {
   TransparentImage._();
 
+  /// Contains the binary data of the transparent image
   static final Uint8List data = Uint8List.fromList([
     0x89,
     0x50,

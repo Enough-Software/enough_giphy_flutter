@@ -1,16 +1,20 @@
 import 'package:enough_giphy/enough_giphy.dart';
-import 'package:enough_giphy_flutter/src/transparent_image.dart';
 import 'package:flutter/widgets.dart';
 
+import 'transparent_image.dart';
+
+/// Displays a single GIPHY image
 class GiphyImageView extends StatelessWidget {
-  /// Creates a widget that displays an [ImageStream] obtained from the network address of the specifid [gif].
+  /// Creates a widget that displays an [ImageStream]
+  /// obtained from the network address of the specified [gif].
   ///
   /// The [gif] argument is required and must not be null.
   /// Set [isShownInGrid] to `true` to select a lower quality GIPHY image.
   ///
   /// Either the [width] and [height] arguments can be specified, or the
   /// widget should be placed in a context that sets tight layout constraints.
-  /// Otherwise, the image dimensions will be derrived from the used [GiphyImage].
+  /// Otherwise, the image dimensions will be derived from the
+  /// used [GiphyImage].
   ///
   /// All network images are cached regardless of HTTP headers.
   ///
@@ -41,7 +45,8 @@ class GiphyImageView extends StatelessWidget {
   /// The associated GIF image
   final GiphyGif gif;
 
-  /// In grid the [gif.recommendedMobileKeyboard] image is used, otherwise the [gif.recommendedMobileSend] will be shown
+  /// In grid the `recommendedMobileKeyboard` [gif] image is used,
+  /// otherwise the `recommendedMobileSend` [gif] will be shown
   final bool isShownInGrid;
 
   /// A builder function that is called if an error occurs during image loading.
@@ -51,16 +56,16 @@ class GiphyImageView extends StatelessWidget {
   /// the exception by providing a replacement widget, or rethrow the exception.
   final ImageErrorWidgetBuilder? errorBuilder;
 
-  /// The duration of the fade-out animation for the [placeholder].
+  /// The duration of the fade-out animation.
   final Duration fadeOutDuration;
 
-  /// The curve of the fade-out animation for the [placeholder].
+  /// The curve of the fade-out animation.
   final Curve fadeOutCurve;
 
-  /// The duration of the fade-in animation for the [image].
+  /// The duration of the fade-in animation for the [gif].
   final Duration fadeInDuration;
 
-  /// The curve of the fade-in animation for the [image].
+  /// The curve of the fade-in animation for the [gif].
   final Curve fadeInCurve;
 
   /// If non-null, require the image to have this width.
@@ -89,9 +94,9 @@ class GiphyImageView extends StatelessWidget {
   ///
   /// The alignment aligns the given position in the image to the given position
   /// in the layout bounds. For example, an [Alignment] alignment of (-1.0,
-  /// -1.0) aligns the image to the top-left corner of its layout bounds, while an
-  /// [Alignment] alignment of (1.0, 1.0) aligns the bottom right of the
-  /// image with the bottom right corner of its layout bounds. Similarly, an
+  /// -1.0) aligns the image to the top-left corner of its layout bounds,
+  /// while an [Alignment] alignment of (1.0, 1.0) aligns the bottom right of
+  /// the image with the bottom right corner of its layout bounds. Similarly, an
   /// alignment of (0.0, 1.0) aligns the bottom middle of the image with the
   /// middle of the bottom edge of its layout bounds.
   ///
@@ -135,12 +140,12 @@ class GiphyImageView extends StatelessWidget {
   /// to an application.
   final bool excludeFromSemantics;
 
-  /// A semantic description of the [image].
+  /// A semantic description of the [gif].
   ///
-  /// Used to provide a description of the [image] to TalkBack on Android, and
+  /// Used to provide a description of the [gif] to TalkBack on Android, and
   /// VoiceOver on iOS.
   ///
-  /// This description will be used both while the [placeholder] is shown and
+  /// This description will be used both while the [gif] is not loaded and
   /// once the image has loaded.
   final String? semanticLabel;
 
@@ -150,7 +155,8 @@ class GiphyImageView extends StatelessWidget {
   /// regardless of these parameters. These parameters are primarily intended
   /// to reduce the memory usage of [ImageCache].
   ///
-  /// In the case where the network image is on the Web platform, the [cacheWidth]
+  /// In the case where the network image is on the Web platform, the
+  /// [cacheWidth]
   /// and [cacheHeight] parameters are ignored as the web engine delegates
   /// image decoding to the web which does not support custom decode sizes.
   final int? cacheWidth;
@@ -167,8 +173,8 @@ class GiphyImageView extends StatelessWidget {
     final imageData = isShownInGrid
         ? gif.recommendedMobileKeyboard
         : gif.recommendedMobileSend;
-    var w = width;
-    var h = height;
+    final w = width;
+    final h = height;
     final image = FadeInImage.memoryNetwork(
       placeholder: TransparentImage.data,
       image: imageData.url,

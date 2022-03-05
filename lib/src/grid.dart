@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
+import 'package:enough_giphy/enough_giphy.dart';
 import 'package:enough_platform_widgets/enough_platform_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -10,14 +10,6 @@ import 'image_view.dart';
 
 /// Shows GIFs in a grid
 class GiphyGrid extends StatelessWidget {
-  final GiphySource giphySource;
-  final void Function(GiphyGif gif)? onSelected;
-  final double spacing;
-  final BorderRadius? borderRadius;
-  final int minColums;
-  final SliverGridDelegate Function(BuildContext context, GiphyGrid grid)
-      gridDelegator;
-
   /// Shows squared GIFs in columns
   const GiphyGrid.square({
     Key? key,
@@ -25,7 +17,7 @@ class GiphyGrid extends StatelessWidget {
     this.onSelected,
     this.spacing = 4.0,
     this.borderRadius,
-    this.minColums = 2,
+    this.minColumns = 2,
   })  : gridDelegator = _square,
         super(key: key);
 
@@ -36,7 +28,7 @@ class GiphyGrid extends StatelessWidget {
     this.onSelected,
     this.spacing = 4.0,
     this.borderRadius,
-    this.minColums = 2,
+    this.minColumns = 2,
   })  : gridDelegator = _fixedWidth,
         super(key: key);
 
@@ -47,75 +39,96 @@ class GiphyGrid extends StatelessWidget {
     this.onSelected,
     this.spacing = 4.0,
     this.borderRadius,
-    this.minColums = 2,
+    this.minColumns = 2,
   })  : gridDelegator = _fixedWidthVaryingHeight,
         super(key: key);
 
+  /// The source for images
+  final GiphySource giphySource;
+
+  /// Method to be called when an image was selected by the user
+  final void Function(GiphyGif gif)? onSelected;
+
+  /// The spacing between images
+  final double spacing;
+
+  /// The optional border radius
+  final BorderRadius? borderRadius;
+
+  /// The minimum number of columns
+  final int minColumns;
+
+  /// the grid delegator
+  final SliverGridDelegate Function(BuildContext context, GiphyGrid grid)
+      gridDelegator;
+
   @override
-  Widget build(BuildContext context) {
-    return SliverGrid(
-      gridDelegate: gridDelegator(context, this),
-      delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int index) {
-          return FutureBuilder<GiphyGif>(
-            future: giphySource.load(index),
-            builder: (context, snapshot) {
-              final data = snapshot.data;
-              if (data != null) {
-                final callback = onSelected;
-                final content = GestureDetector(
-                  child: GiphyImageView(
-                    gif: data,
-                    isShownInGrid: true,
-                    fit: BoxFit.cover,
-                  ),
-                  onTap: callback == null ? null : () => callback(data),
-                );
-                final radius = borderRadius;
-                if (radius == null) {
-                  return content;
-                } else {
-                  return ClipRRect(
-                    borderRadius: radius,
-                    child: content,
+  Widget build(BuildContext context) => SliverGrid(
+        gridDelegate: gridDelegator(context, this),
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            if (!giphySource.hasElementAt(index)) {
+              return null;
+            }
+            return FutureBuilder<GiphyGif>(
+              future: giphySource.load(index),
+              builder: (context, snapshot) {
+                final data = snapshot.data;
+                if (data != null) {
+                  final callback = onSelected;
+                  final content = GestureDetector(
+                    child: GiphyImageView(
+                      gif: data,
+                      isShownInGrid: true,
+                      fit: BoxFit.cover,
+                    ),
+                    onTap: callback == null ? null : () => callback(data),
                   );
+                  final radius = borderRadius;
+                  if (radius == null) {
+                    return content;
+                  } else {
+                    return ClipRRect(
+                      borderRadius: radius,
+                      child: content,
+                    );
+                  }
                 }
-              }
-              return Center(child: PlatformCircularProgressIndicator());
-            },
-          );
-        },
-        childCount: giphySource.totalCount,
-      ),
-    );
-  }
+                return Center(child: PlatformCircularProgressIndicator());
+              },
+            );
+          },
+          childCount: giphySource.totalCount,
+        ),
+      );
 
-  static SliverGridDelegate _square(BuildContext context, GiphyGrid grid) {
-    return SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 4,
-      childAspectRatio: 1,
-      crossAxisSpacing: grid.spacing,
-      mainAxisSpacing: grid.spacing,
-    );
-  }
+  static SliverGridDelegate _square(BuildContext context, GiphyGrid grid) =>
+      SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        childAspectRatio: 1,
+        crossAxisSpacing: grid.spacing,
+        mainAxisSpacing: grid.spacing,
+      );
 
-  static SliverGridDelegate _fixedWidth(BuildContext context, GiphyGrid grid) {
-    return SliverGridDelegateWithMaxCrossAxisExtent(
-      maxCrossAxisExtent: 200,
-      childAspectRatio: 1,
-      crossAxisSpacing: grid.spacing,
-      mainAxisSpacing: grid.spacing,
-    );
-  }
+  static SliverGridDelegate _fixedWidth(BuildContext context, GiphyGrid grid) =>
+      SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 200,
+        childAspectRatio: 1,
+        crossAxisSpacing: grid.spacing,
+        mainAxisSpacing: grid.spacing,
+      );
 
   static SliverGridDelegate _fixedWidthVaryingHeight(
-      BuildContext context, GiphyGrid grid) {
-    return FixedWidthVaryingHeightGridDelegate(grid);
-  }
+          BuildContext context, GiphyGrid grid) =>
+      FixedWidthVaryingHeightGridDelegate(grid);
 }
 
+/// Layouts a grid with a fixed with but height that depends on the image
 class FixedWidthVaryingHeightGridDelegate extends SliverGridDelegate {
+  /// Creates a new grid delegate
   FixedWidthVaryingHeightGridDelegate(this.parent);
+
+  /// The parent gid
   final GiphyGrid parent;
   FixedWidthVaryingHeightLayout? _currentLayout;
   SliverConstraints? _currentConstraints;
@@ -142,8 +155,8 @@ class FixedWidthVaryingHeightGridDelegate extends SliverGridDelegate {
     var columns = ((constraints.crossAxisExtent + parent.spacing) /
             (columnWidth + parent.spacing))
         .floor();
-    if (columns < parent.minColums) {
-      columns = parent.minColums;
+    if (columns < parent.minColumns) {
+      columns = parent.minColumns;
     }
     columnWidth =
         (constraints.crossAxisExtent - (columns - 1) * parent.spacing) /
@@ -156,13 +169,12 @@ class FixedWidthVaryingHeightGridDelegate extends SliverGridDelegate {
   }
 
   @override
-  bool shouldRelayout(covariant SliverGridDelegate oldDelegate) {
-    // print('shouldRelayout');
-    return true;
-  }
+  bool shouldRelayout(covariant SliverGridDelegate oldDelegate) => true;
 }
 
+/// Layouts a sliver grid with a fixed with but height that depends on the image
 class FixedWidthVaryingHeightLayout extends SliverGridLayout {
+  /// Creates a new sliver grid layout
   FixedWidthVaryingHeightLayout(
       this.columns, this.columnWidth, this.spacing, this.source)
       : _columnOffsets = List.generate(columns, (index) => 0.0) {
@@ -171,9 +183,16 @@ class FixedWidthVaryingHeightLayout extends SliverGridLayout {
     }
   }
 
+  /// The number of columns
   final int columns;
+
+  /// The width for each column
   final double columnWidth;
+
+  /// The spacing between images
   final double spacing;
+
+  /// The image source
   final GiphySource source;
   final List<double> _columnOffsets;
   final _geometries = <Rectangle<double>>[];
@@ -223,11 +242,13 @@ class FixedWidthVaryingHeightLayout extends SliverGridLayout {
     if (childCount <= _geometries.length) {
       final rectangle = _geometries[childCount - 1];
       // print(
-      //     'computeMaxScrollOffset(childCount=$childCount): ${rectangle.bottom}');
+      //     'computeMaxScrollOffset(childCount=$childCount):'
+      //    ' ${rectangle.bottom}');
       return rectangle.bottom;
     }
     // print(
-    //     'computeMaxScrollOffset(childCount=$childCount): guessing ${(childCount ~/ columns) * columnWidth * 2.0}');
+    //     'computeMaxScrollOffset(childCount=$childCount): '
+    // 'guessing ${(childCount ~/ columns) * columnWidth * 2.0}');
     return (childCount ~/ columns) * columnWidth * 2.0;
   }
 
@@ -242,7 +263,8 @@ class FixedWidthVaryingHeightLayout extends SliverGridLayout {
       }
     }
     // print(
-    //     'getMaxChildIndexForScrollOffset($scrollOffset)=cacheCount == ${source.cacheCount}');
+    //     'getMaxChildIndexForScrollOffset($scrollOffset)=cacheCount == '
+    //     '${source.cacheCount}');
     return source.cacheCount;
   }
 

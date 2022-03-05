@@ -1,17 +1,14 @@
-import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
-import 'package:enough_giphy_flutter/src/grid.dart';
-import 'package:enough_giphy_flutter/src/image_view.dart';
 import 'package:enough_platform_widgets/enough_platform_widgets.dart';
-import 'package:enough_platform_widgets/platform.dart';
-import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+
+import '../enough_giphy_flutter.dart';
+import 'grid.dart';
 
 /// What predefined grid should be used
 enum GridType {
-  /// Square grid with the specififed gridMinColumns
+  /// Square grid with the specified gridMinColumns
   squareFixedColumns,
 
   /// Square grid with as many columns as fit
@@ -23,58 +20,6 @@ enum GridType {
 
 /// Contains the GIPHY UI components
 class GiphySheet extends StatefulWidget {
-  final GiphyClient client;
-  final GiphyRequest request;
-  final InputDecoration? searchInputDecoration;
-  final String? searchLabelText;
-  final String? searchHintText;
-  final String? searchEmptyResultText;
-  final String? searchCancelText;
-  final String? headerGifsText;
-  final String? headerStickersText;
-  final String? headerEmojiText;
-  final void Function(GiphyGif gif)? onSelected;
-  final Widget? attribution;
-  final bool showAttribution;
-  final bool showSearch;
-  final bool showTypeSwitcher;
-  final bool showPreview;
-  final double gridSpacing;
-
-  /// Optional scroll controller in case this sheet is embedded in a linked scrolling experience like a `DraggableScrollableSheet`
-  final ScrollController? scrollController;
-
-  /// Sliver builder responsible for creating the visual representation of the given source
-  final Widget Function(
-    BuildContext context,
-    GiphySource source,
-    void Function(GiphyGif) onSelected,
-  )? gridBuilder;
-
-  /// Sliver builder that is invoked when no GIFs could be loaded
-  final Widget Function(
-    BuildContext context,
-    dynamic error,
-    StackTrace? strackTrace,
-  )? errorBuilder;
-
-  /// When `true` the state is kept in a static variable to subsequent calls.
-  ///
-  /// This helps the user to not repeat a search entry, for example.
-  final bool keepState;
-
-  /// The minimum number of columns, defaults to 4
-  final int gridMinColumns;
-
-  /// The border radius for images shown in the grid
-  final BorderRadius? gridBorderRadius;
-
-  /// The border radius for an image shown in a preview alert
-  final BorderRadius? previewBorderRadius;
-
-  /// The type of the predefined grids
-  final GridType gridType;
-
   /// Creates a new GiphySheet
   const GiphySheet({
     Key? key,
@@ -104,6 +49,99 @@ class GiphySheet extends StatefulWidget {
     this.gridMinColumns = 2,
     this.gridType = GridType.stackedColumns,
   }) : super(key: key);
+
+  /// The giphy client
+  final GiphyClient client;
+
+  /// The current request to giphy
+  final GiphyRequest request;
+
+  /// The decoration for the input field
+  final InputDecoration? searchInputDecoration;
+
+  /// The label for the search field
+  final String? searchLabelText;
+
+  /// The hint shown in an empty search field
+  final String? searchHintText;
+
+  /// The text shown when the search yielded no result
+  final String? searchEmptyResultText;
+
+  /// The text to cancel the search
+  final String? searchCancelText;
+
+  /// The text for GIFs
+  final String? headerGifsText;
+
+  /// The text for stickers
+  final String? headerStickersText;
+
+  /// The text for emoji
+  final String? headerEmojiText;
+
+  /// Method that is informed about the selection of an image
+  final void Function(GiphyGif gif)? onSelected;
+
+  /// The attribution visualization
+  ///
+  /// Compare [showAttribution]
+  final Widget? attribution;
+
+  /// Should attribution be shown?
+  ///
+  /// Compare [attribution]
+  final bool showAttribution;
+
+  /// Should the search be shown?
+  final bool showSearch;
+
+  /// Should the switch between GIFs, stickers and emoji been shown?
+  final bool showTypeSwitcher;
+
+  /// Should a bigger preview of the selected image been shown
+  /// before the user can select it?
+  final bool showPreview;
+
+  /// The spacing between the individual grid tiles
+  final double gridSpacing;
+
+  /// Optional scroll controller
+  /// in case this sheet is embedded in a linked scrolling
+  /// experience like a `DraggableScrollableSheet`
+  final ScrollController? scrollController;
+
+  /// Sliver builder responsible for creating the visual representation of
+  /// the given source
+  final Widget Function(
+    BuildContext context,
+    GiphySource source,
+    void Function(GiphyGif) onSelected,
+  )? gridBuilder;
+
+  /// Sliver builder that is invoked when no GIFs could be loaded
+  final Widget Function(
+    BuildContext context,
+    dynamic error,
+    StackTrace? stackTrace,
+  )? errorBuilder;
+
+  /// When `true` the state is kept in a static variable to subsequent calls.
+  ///
+  /// This helps the user to not repeat a search entry, for example.
+  final bool keepState;
+
+  /// The minimum number of columns, defaults to 4
+  final int gridMinColumns;
+
+  /// The border radius for images shown in the grid
+  final BorderRadius? gridBorderRadius;
+
+  /// The border radius for an image shown in a preview alert
+  final BorderRadius? previewBorderRadius;
+
+  /// The type of the predefined grids
+  final GridType gridType;
 
   @override
   _GiphySheetState createState() => _GiphySheetState();
@@ -136,15 +174,24 @@ class _GiphySheetState extends State<GiphySheet> {
     _loaderFuture = widget.client.request(_currentRequest);
     _inputDecoration = widget.searchInputDecoration ??
         InputDecoration(
-          prefixIcon: const Icon(Icons.search),
+          prefixIcon: defaultTargetPlatform == TargetPlatform.windows
+              ? null
+              : const Icon(Icons.search),
           labelText: widget.searchLabelText ?? 'GIPHY search',
           hintText: widget.searchHintText ?? 'Your search',
           suffix: PlatformIconButton(
-              icon: Icon(CommonPlatformIcons.clear),
-              onPressed: () {
-                _searchController.text = '';
-                _reload(_currentRequest.copyWithoutSearchQuery());
-              }),
+            icon: Icon(CommonPlatformIcons.clear),
+            onPressed: () {
+              _searchController.text = '';
+              _reload(_currentRequest.copyWithoutSearchQuery());
+            },
+          ),
+          suffixIcon: defaultTargetPlatform == TargetPlatform.windows
+              ? PlatformIconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () => _onSearchSubmitted(_searchController.text),
+                )
+              : null,
         );
     super.didChangeDependencies();
   }
@@ -220,7 +267,7 @@ class _GiphySheetState extends State<GiphySheet> {
                     onSelected: _onSelected,
                     spacing: widget.gridSpacing,
                     borderRadius: widget.gridBorderRadius,
-                    minColums: widget.gridMinColumns,
+                    minColumns: widget.gridMinColumns,
                   );
                   break;
                 case GridType.squareFixedWidth:
@@ -229,7 +276,7 @@ class _GiphySheetState extends State<GiphySheet> {
                     onSelected: _onSelected,
                     spacing: widget.gridSpacing,
                     borderRadius: widget.gridBorderRadius,
-                    minColums: widget.gridMinColumns,
+                    minColumns: widget.gridMinColumns,
                   );
                   break;
                 case GridType.stackedColumns:
@@ -238,7 +285,7 @@ class _GiphySheetState extends State<GiphySheet> {
                     onSelected: _onSelected,
                     spacing: widget.gridSpacing,
                     borderRadius: widget.gridBorderRadius,
-                    minColums: widget.gridMinColumns,
+                    minColumns: widget.gridMinColumns,
                   );
                   break;
               }
@@ -262,7 +309,10 @@ class _GiphySheetState extends State<GiphySheet> {
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
-                            'Unable to connect to GIPHY, please check your internet connection.\n\nDetails: $error'),
+                          'Unable to connect to GIPHY, '
+                          'please check your internet '
+                          'connection.\n\nDetails: $error',
+                        ),
                       ),
                     ],
                   ),
@@ -280,7 +330,7 @@ class _GiphySheetState extends State<GiphySheet> {
     );
   }
 
-  void _onSelected(GiphyGif gif) async {
+  Future<void> _onSelected(GiphyGif gif) async {
     if (widget.showPreview) {
       final approved = await _showPreview(gif);
       if (approved != true) {
@@ -298,7 +348,7 @@ class _GiphySheetState extends State<GiphySheet> {
   Widget _buildSearchField(BuildContext context) {
     if (PlatformInfo.isCupertino) {
       return CupertinoSearchFlowTextField(
-        enabled: (_currentRequest.type != GiphyType.emoji),
+        enabled: _currentRequest.type != GiphyType.emoji,
         controller: _searchController,
         cancelText: widget.searchCancelText ?? 'Cancel',
         onSubmitted: _onSearchSubmitted,
@@ -306,7 +356,7 @@ class _GiphySheetState extends State<GiphySheet> {
       );
     }
     return DecoratedPlatformTextField(
-      enabled: (_currentRequest.type != GiphyType.emoji),
+      enabled: _currentRequest.type != GiphyType.emoji,
       decoration: _inputDecoration,
       controller: _searchController,
       textInputAction: TextInputAction.search,
@@ -331,29 +381,27 @@ class _GiphySheetState extends State<GiphySheet> {
     });
   }
 
-  Widget _buildTypeSwitcher(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: PlatformToggleButtons(
-          children: GiphyType.values
-              .map((type) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(_getHeaderText(type)),
-                  ))
-              .toList(),
-          isSelected: GiphyType.values
-              .map((type) => (type == _currentRequest.type))
-              .toList(),
-          onPressed: (index) {
-            final request =
-                _currentRequest.copyWith(type: GiphyType.values[index]);
-            _reload(request);
-          },
+  Widget _buildTypeSwitcher(BuildContext context) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: PlatformToggleButtons(
+            children: GiphyType.values
+                .map((type) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(_getHeaderText(type)),
+                    ))
+                .toList(),
+            isSelected: GiphyType.values
+                .map((type) => type == _currentRequest.type)
+                .toList(),
+            onPressed: (index) {
+              final request =
+                  _currentRequest.copyWith(type: GiphyType.values[index]);
+              _reload(request);
+            },
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   Future<bool?> _showPreview(GiphyGif gif) {
     final titleWidget = Text(gif.title);
