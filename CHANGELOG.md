@@ -1,3 +1,9 @@
+## 0.3.0
+* Adapt to emoji API changes
+* Improve API documentation 
+* Improve syntax
+* Display search icon on Windows to submit search
+
 ## 0.2.2
 * Fix for dartdoc error
 
