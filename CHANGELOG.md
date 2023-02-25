@@ -1,3 +1,6 @@
+## 0.4.0
+* Ensure compatibility with Flutter 3.7
+
 ## 0.3.0
 * Adapt to emoji API changes
 * Improve API documentation 

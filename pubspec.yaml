@@ -1,6 +1,6 @@
 name: enough_giphy_flutter
 description: Add a powerful and customizable GIPHY picker into your Flutter app.
-version: 0.3.0
+version: 0.4.0
 homepage: https://github.com/Enough-Software/enough_giphy_flutter
 
 environment:
@@ -8,30 +8,22 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  enough_giphy: #^0.2.0
-    git:
-      url: https://github.com/Enough-Software/enough_giphy.git
-    # path: ../enough_giphy
-  enough_platform_widgets: #^0.3.0
-    git:
-      url: https://github.com/Enough-Software/enough_platform_widgets.git
-    #path: ../enough_platform_widgets
+  enough_giphy: ^0.2.0
+  enough_platform_widgets: ^0.7.1
   flutter:
     sdk: flutter
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  lints: ^1.0.1
+  lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
   assets:
     - assets/attribution.gif
-
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
@@ -42,7 +34,6 @@ flutter:
   #
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # To add custom fonts to your package, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

@@ -31,7 +31,7 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -78,8 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: CupertinoButton.filled(
-                child: const Icon(Icons.gif),
                 onPressed: _selectGif,
+                child: const Icon(Icons.gif),
               ),
             ),
           ),
@@ -108,14 +108,14 @@ class _MyHomePageState extends State<MyHomePage> {
       type: GiphyType.gifs, // choose between gifs, stickers and emoji
       rating: GiphyRating.g, // general audience / all ages
       lang: GiphyLanguage.english, // 'en'
-      keepState: true, // remember type and seach query
+      keepState: true, // remember type and search query
       showPreview: true, // shows a preview before returning the GIF
     );
     // process the gif:
     if (gif != null) {
       _images.insert(0, gif);
       setState(() {});
-      WidgetsBinding.instance?.addPostFrameCallback((duration) {
+      WidgetsBinding.instance.addPostFrameCallback((duration) {
         _scrollController.animateTo(
           0,
           duration: const Duration(microseconds: 500),
