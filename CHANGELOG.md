@@ -1,3 +1,6 @@
+## 0.4.1
+- Update dependencies
+
 ## 0.4.0
 * Ensure compatibility with Flutter 3.7
 
