@@ -319,7 +319,7 @@ class _GiphySheetState extends State<GiphySheet> {
                 );
               }
             }
-            return SliverToBoxAdapter(
+            return const SliverToBoxAdapter(
               child: Center(
                 child: PlatformCircularProgressIndicator(),
               ),

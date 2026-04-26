@@ -94,7 +94,7 @@ class GiphyGrid extends StatelessWidget {
                     );
                   }
                 }
-                return Center(child: PlatformCircularProgressIndicator());
+                return const Center(child: PlatformCircularProgressIndicator());
               },
             );
           },
